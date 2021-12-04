@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import Optional, Tuple
 
 import csv
 
@@ -23,11 +23,15 @@ class Board:
 
     def check_for_h_win(self) -> bool:
         for y in range(5):
-            return all(self.called[y])
+            if all(self.called[y]):
+                return True
+        return False
 
     def check_for_v_win(self) -> bool:
         for x in range(5):
-            return all(self.called[y][x] for y in range(5))
+            if all(self.called[y][x] for y in range(5)):
+                return True
+        return False
 
     def check_for_win(self) -> bool:
         if self.check_for_h_win():
@@ -35,6 +39,14 @@ class Board:
         if self.check_for_v_win():
             return True
         return False
+
+    def unmarked_score(self) -> int:
+        result = 0
+        for y in range(5):
+            for x in range(5):
+                if not self.called[y][x]:
+                    result += self.rows[y][x]
+        return result
 
 
 def get_boards(data: list[list[int]]) -> list[Board]:
@@ -58,8 +70,24 @@ class BoardSet:
                 return i
         return None
 
+    def find_score(self, calls: list[int]) -> tuple[int, int]:
+        for call in calls:
+            self.hear_call(call)
+            winner = self.check_for_win()
+            if winner is not None:
+                return call, self.boards[winner].unmarked_score()
 
-TOY_BOARDS = BoardSet(boards=get_boards(get_data(toy=True)))
+    def find_answer(self, calls: list[int]) -> int:
+        last_called, unmarked_points = self.find_score(calls)
+        return last_called * unmarked_points
+
+
+def make_toy_boards() -> BoardSet:
+    return BoardSet(boards=get_boards(get_data(toy=True)))
+
+
+def make_real_boards() -> BoardSet:
+    return BoardSet(boards=get_boards(get_data(toy=False)))
 
 
 toy_calls = [
@@ -92,7 +120,7 @@ toy_calls = [
     1,
 ]
 
-calls = [
+real_calls = [
     57,
     9,
     8,
