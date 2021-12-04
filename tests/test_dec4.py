@@ -59,3 +59,17 @@ class TestDec3:
     def test_real_answer(self):
         boardset = dec4.make_real_boards()
         assert boardset.find_answer(calls=dec4.real_calls) == 10374
+
+    def test_last_score(self):
+        boardset = dec4.make_toy_boards()
+        last_called, unmarked_points = boardset.get_all_scores(calls=dec4.toy_calls)[-1]
+        assert last_called == 13
+        assert unmarked_points == 148
+
+    def test_last_answer(self):
+        boardset = dec4.make_toy_boards()
+        assert boardset.get_last_answer(calls=dec4.toy_calls) == 1924
+
+    def test_real_last_answer(self):
+        boardset = dec4.make_real_boards()
+        assert boardset.get_last_answer(calls=dec4.real_calls) == 24742

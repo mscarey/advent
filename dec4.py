@@ -70,6 +70,13 @@ class BoardSet:
                 return i
         return None
 
+    def check_for_wins(self) -> list[int]:
+        result = []
+        for i, board in enumerate(self.boards):
+            if board.check_for_win():
+                result.append(i)
+        return result
+
     def find_score(self, calls: list[int]) -> tuple[int, int]:
         for call in calls:
             self.hear_call(call)
@@ -80,6 +87,23 @@ class BoardSet:
     def find_answer(self, calls: list[int]) -> int:
         last_called, unmarked_points = self.find_score(calls)
         return last_called * unmarked_points
+
+    def get_all_scores(self, calls: list[int]) -> list[tuple[int, int]]:
+        """Find scores if bingo game continued until everyone won."""
+        result = []
+        already_won = set()
+        for call in calls:
+            self.hear_call(call)
+            new_winners = self.check_for_wins()
+            for winner in new_winners:
+                if winner not in already_won:
+                    result.append((call, self.boards[winner].unmarked_score()))
+                    already_won.add(winner)
+        return result
+
+    def get_last_answer(self, calls: list[int]) -> int:
+        scores = self.get_all_scores(calls)
+        return scores[-1][0] * scores[-1][1]
 
 
 def make_toy_boards() -> BoardSet:
