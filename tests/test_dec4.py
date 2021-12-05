@@ -1,7 +1,7 @@
 import dec4
 
 
-class TestDec3:
+class TestDec4:
     def test_totals(self):
         data = dec4.get_data(toy=True)
         assert data[0][0] == 22
