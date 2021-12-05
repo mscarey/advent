@@ -47,12 +47,24 @@ class Line:
         more = max(self.start.y, self.end.y)
         return [Point(self.start.x, v) for v in range(less, more + 1)]
 
+    def get_d_points(self) -> list[Point]:
+        if self.start.x < self.end.x:
+            x_range = range(self.start.x, self.end.x + 1)
+        else:
+            x_range = range(self.start.x, self.end.x - 1, -1)
+        if self.start.y < self.end.y:
+            y_range = range(self.start.y, self.end.y + 1)
+        else:
+            y_range = range(self.start.y, self.end.y - 1, -1)
+
+        return [Point(h, v) for h, v in zip(x_range, y_range)]
+
     def get_points(self) -> list[Point]:
         if self.is_horizontal():
             return self.get_h_points()
         elif self.is_vertical():
             return self.get_v_points()
-        raise NotImplementedError
+        return self.get_d_points()
 
 
 def count_overlap_points(list_of_lines: list[Line]) -> int:
@@ -61,7 +73,7 @@ def count_overlap_points(list_of_lines: list[Line]) -> int:
         for point in line.get_points():
             deep[str(point)] += 1
     total = 0
-    for item in deep.most_common(10):
+    for item in deep.most_common():
         if item[1] > 1:
             total += 1
         else:

@@ -46,3 +46,15 @@ class TestDec5:
         relevant = dec5.get_relevant_lines(data)
         overlap_count = dec5.count_overlap_points(relevant)
         assert overlap_count == 5
+
+    def test_count_real_overlap_points(self):
+        data = dec5.get_data(toy=False)
+        relevant = dec5.get_relevant_lines(data)
+        overlap_count = dec5.count_overlap_points(relevant)
+        assert overlap_count == 4421
+
+    def test_count_all_overlap_points(self):
+        data = dec5.get_data(toy=True)
+        lines = dec5.get_lines(data)
+        overlap_count = dec5.count_overlap_points(lines)
+        assert overlap_count == 12
