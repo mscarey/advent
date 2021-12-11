@@ -40,4 +40,4 @@ class TestCrabs:
 
     def test_find_fuel_for_cheapest_crabstyle_real(self):
         result = dec7.find_fuel_for_cheapest_crabstyle(positions=dec7.REAL)
-        assert result == 168
+        assert result == 100220525

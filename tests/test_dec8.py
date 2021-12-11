@@ -77,10 +77,37 @@ class TestDec8:
     def test_read_unscrambled(self):
         assert dec8.Display.read_decoded(["acdfg", "bcdf", "acf"]) == 347
 
-    def test_assign_easy_digits(self):
+    def test_assign_easy_line_toy(self):
         displays = dec8.make_displays(ONE_LINE)
-        assert displays[0].assign_easy_digits() == 0
+        assert displays[0].assign_easy_line() == "d"
 
-    def test_get_key(self):
+    def test_get_guesses_toy(self):
         displays = dec8.make_displays(ONE_LINE)
-        assert displays[0].get_key == "cdfeb"
+        guesses = list(displays[0].get_guesses())
+        assert len(guesses) == 720
+
+    def test_get_line_key_toy(self):
+        displays = dec8.make_displays(ONE_LINE)
+        assert displays[0].get_line_key() == "deafgbc"
+
+    def test_encode_picture_toy(self):
+        displays = dec8.make_displays(ONE_LINE)
+        assert displays[0].encode_picture(picture="acf", key="deafgbc") == "abd"
+
+    def test_get_cypher_digits_toy(self):
+        displays = dec8.make_displays(ONE_LINE)
+        line_key = displays[0].get_line_key()
+
+    def test_read_display_toy(self):
+        displays = dec8.make_displays(ONE_LINE)
+        assert displays[0].read_display() == 5353
+
+    def test_read_display_several(self):
+        data = dec8.get_data(toy=True)
+        displays = dec8.make_displays(data)
+        assert sum(display.read_display() for display in displays) == 61229
+
+    def test_read_display_real(self):
+        data = dec8.get_data(toy=False)
+        displays = dec8.make_displays(data)
+        assert sum(display.read_display() for display in displays) == 1009098
