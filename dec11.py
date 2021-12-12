@@ -1,3 +1,6 @@
+from typing import Optional
+
+
 def get_data(day: int = 11, toy: bool = True) -> list[list[int]]:
     filename = f"data/{'toy' if toy else 'dec'}{int(day)}.csv"
     with open(filename) as csv_file:
@@ -7,7 +10,7 @@ def get_data(day: int = 11, toy: bool = True) -> list[list[int]]:
 
 
 def flash(data: list[list[int]], x: int, y: int) -> list[list[int]]:
-    
+
     new_data = [[item for item in row] for row in data]
     new_data[y][x] = 0
     for i in range(-1, 2):
@@ -44,3 +47,11 @@ def multiple_steps(data: list[list[int]], steps: int) -> list[list[int]]:
         data, new_flashes = step(data)
         total_flashes += new_flashes
     return data, total_flashes
+
+
+def all_flash_simultaneously(data: list[list[int]]) -> Optional[int]:
+    for i in range(10000):
+        data, new_flashes = step(data)
+        if new_flashes == 100:
+            return i + 1
+    return None

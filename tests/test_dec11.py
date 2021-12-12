@@ -26,3 +26,16 @@ class TestDec11:
         grid, total_flashes = dec11.multiple_steps(data, 100)
         assert total_flashes == 1656
         assert grid[1] == [0, 7, 4, 9, 7, 6, 6, 9, 1, 8]
+
+    def test_100_steps_real(self):
+        data = dec11.get_data(toy=False)
+        grid, total_flashes = dec11.multiple_steps(data, 100)
+        assert total_flashes == 1739
+
+    def test_all_flash_simultaneously(self):
+        data = dec11.get_data()
+        assert dec11.all_flash_simultaneously(data) == 195
+
+    def test_all_flash_simultaneously(self):
+        data = dec11.get_data(toy=False)
+        assert dec11.all_flash_simultaneously(data) == 324
